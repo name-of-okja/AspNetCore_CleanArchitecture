@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using CleanArchitecture.Application.Contracts.Persistence;
-using CleanArchitecture.Application.Features.Video.Dtos;
+using CleanArchitecture.Application.Features.Videos.Dtos;
 using MediatR;
 
-namespace CleanArchitecture.Application.Features.Video;
+namespace CleanArchitecture.Application.Features.Videos;
 public class List
 {
     public class Query : IRequest<List<VideoDto>>
