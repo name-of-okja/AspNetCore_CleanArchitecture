@@ -10,7 +10,11 @@ public class Delete
 {
     public class Command : IRequest<Unit>
     {
-        public int Id { get; set; }
+        public int Id { get; }
+        public Command(int id)
+        {
+            Id = id;
+        }
     }
 
     public class Handler : IRequestHandler<Command, Unit>

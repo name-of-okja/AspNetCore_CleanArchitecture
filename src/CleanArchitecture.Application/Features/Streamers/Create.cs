@@ -13,14 +13,20 @@ public class Create
 {
     public class Command : IRequest<int>
     {
-        public CreateStreamerDto payload { get; set; }
+        public CreateStreamerDto Payload { get; }
+        public Command(CreateStreamerDto payload)
+        {
+            Payload = payload;
+        }
     }
 
     public class CommandValidator : AbstractValidator<Command>
     {
         public CommandValidator()
         {
-            RuleFor(x => x.payload).SetValidator(new CreateStreamerDtoValidator());
+            RuleFor(x => x.Payload)
+                .NotNull()
+                .SetValidator(new CreateStreamerDtoValidator());
         }
     }
 
@@ -53,7 +59,7 @@ public class Create
         }
         public async Task<int> Handle(Command request, CancellationToken cancellationToken)
         {
-            var streamer = _mapper.Map<Streamer>(request.payload);
+            var streamer = _mapper.Map<Streamer>(request.Payload);
 
             var streamerEntity = await _streamerRepository.AddAsync(streamer);
 

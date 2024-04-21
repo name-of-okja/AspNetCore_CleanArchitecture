@@ -8,7 +8,11 @@ public class List
 {
     public class Query : IRequest<List<VideoDto>>
     {
-        public string Username { get; set; } = string.Empty;
+        public string Username { get; }
+        public Query(string username)
+        {
+            Username = username;
+        }
     }
 
     public class Handler : IRequestHandler<Query, List<VideoDto>>

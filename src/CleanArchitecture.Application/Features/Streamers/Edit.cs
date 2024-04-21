@@ -12,15 +12,22 @@ public class Edit
 {
     public class Command : IRequest<Unit>
     {     
-        public int Id { get; set; }
-        public EditStreamerDto payload { get; set; }
+        public int Id { get; }
+        public EditStreamerDto Payload { get; set; }
+
+        public Command(int id)
+        {
+            Id = id;
+        }
     }
 
     public class CommandValidator : AbstractValidator<Command>
     {
         public CommandValidator()
         {
-            RuleFor(x => x.payload).SetValidator(new EditStreadmerDtoValidator());
+            RuleFor(x => x.Payload)
+                .NotNull()
+                .SetValidator(new EditStreadmerDtoValidator());
         }
     }
 
@@ -57,7 +64,7 @@ public class Edit
             }
 
             // payload -> streamer update
-            _mapper.Map(request.payload, streamer, typeof(EditStreamerDto), typeof(Streamer));
+            _mapper.Map(request.Payload, streamer, typeof(EditStreamerDto), typeof(Streamer));
 
             await _streamerRepository.UpdateAsync(streamer);
 
