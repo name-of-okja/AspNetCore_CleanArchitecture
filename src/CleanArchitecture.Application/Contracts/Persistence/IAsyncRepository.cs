@@ -14,7 +14,7 @@ public interface IAsyncRepository<T> where T : BaseDomainModel
                                     bool disableTracking = true);
     Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate,
                                 Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-                                List<Expression<Func<T, object>>> icludes = null,
+                                List<Expression<Func<T, object>>> includes = null,
                                 bool disableTracking = true);
     Task<T> GetByIdAsync(int id);
     Task<T> AddAsync(T entity);
