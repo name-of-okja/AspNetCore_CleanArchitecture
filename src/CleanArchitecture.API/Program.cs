@@ -1,9 +1,11 @@
-
+using CleanArchitecture.Infrastructure;
+using CleanArchitecture.Application;
+using CleanArchitecture.Infrastructure.Persistence;
 namespace CleanArchitecture.API;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +16,16 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        builder.Services.AddInfrastructureServcies(builder.Configuration);
+        builder.Services.AddApplicationServcies();
+
         var app = builder.Build();
+
+        using (var dbSeedScope = app.Services.CreateScope())
+        {
+            await StreamerDbContextSeed.SeedAsync(dbSeedScope.ServiceProvider.GetRequiredService<StreamerDbContext>(),
+                                    dbSeedScope.ServiceProvider.GetRequiredService<ILogger<StreamerDbContextSeed>>());
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
