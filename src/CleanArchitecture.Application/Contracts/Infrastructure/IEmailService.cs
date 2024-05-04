@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application.Models;
+﻿using CleanArchitecture.Application.Models.Email;
 
 namespace CleanArchitecture.Application.Contracts.Infrastructure;
 public interface IEmailService

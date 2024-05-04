@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Application.Models;
+﻿namespace CleanArchitecture.Application.Models.Email;
 public class EmailSettings
 {
     public string ApiKey { get; set; } = string.Empty;

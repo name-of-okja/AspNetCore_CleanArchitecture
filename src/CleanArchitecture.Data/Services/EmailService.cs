@@ -1,6 +1,6 @@
 ﻿
 using CleanArchitecture.Application.Contracts.Infrastructure;
-using CleanArchitecture.Application.Models;
+using CleanArchitecture.Application.Models.Email;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SendGrid;

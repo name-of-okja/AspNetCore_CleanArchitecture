@@ -2,7 +2,7 @@
 using CleanArchitecture.Application.Contracts.Infrastructure;
 using CleanArchitecture.Application.Contracts.Persistence;
 using CleanArchitecture.Application.Features.Streamers.Dtos;
-using CleanArchitecture.Application.Models;
+using CleanArchitecture.Application.Models.Email;
 using CleanArchitecture.Domain;
 using FluentValidation;
 using MediatR;
@@ -49,7 +49,7 @@ public class Create
         private readonly IEmailService _emailService;
         private readonly ILogger<Handler> _logger;
 
-        public Handler(IStreamerRepository streamerRepository, IMapper mapper, 
+        public Handler(IStreamerRepository streamerRepository, IMapper mapper,
                     IEmailService emailService, ILogger<Handler> logger)
         {
             _streamerRepository = streamerRepository;

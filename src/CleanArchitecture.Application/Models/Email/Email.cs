@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Application.Models;
+﻿namespace CleanArchitecture.Application.Models.Email;
 public class Email
 {
     public string To { get; set; } = string.Empty;
