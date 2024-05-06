@@ -1,6 +1,7 @@
 using CleanArchitecture.Infrastructure;
 using CleanArchitecture.Application;
 using CleanArchitecture.Infrastructure.Persistence;
+using CleanArchitecture.Identity;
 namespace CleanArchitecture.API;
 
 public class Program
@@ -18,13 +19,24 @@ public class Program
 
         builder.Services.AddInfrastructureServcies(builder.Configuration);
         builder.Services.AddApplicationServcies();
+        builder.Services.AddAuthServices(builder.Configuration);
+        builder.Services.AddCors(opt =>
+        {
+            opt.AddPolicy("CorsPolicy", 
+                builder => builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader());
+        });
 
         var app = builder.Build();
 
         using (var dbSeedScope = app.Services.CreateScope())
         {
-            await StreamerDbContextSeed.SeedAsync(dbSeedScope.ServiceProvider.GetRequiredService<StreamerDbContext>(),
-                                    dbSeedScope.ServiceProvider.GetRequiredService<ILogger<StreamerDbContextSeed>>());
+            await StreamerDbContextSeed.SeedAsync(
+                                        dbSeedScope.ServiceProvider.GetRequiredService<StreamerDbContext>(),
+                                        dbSeedScope.ServiceProvider.GetRequiredService<ILogger<StreamerDbContextSeed>>()
+                                    );
         }
 
         // Configure the HTTP request pipeline.
@@ -33,9 +45,10 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        
+        app.UseAuthentication();
         app.UseAuthorization();
-
+        app.UseCors("CorsPolicy");
 
         app.MapControllers();
 

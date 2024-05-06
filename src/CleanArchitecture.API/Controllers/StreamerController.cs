@@ -1,5 +1,7 @@
 ﻿using CleanArchitecture.Application.Features.Streamers.Dtos;
+using CleanArchitecture.Identity.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -18,6 +20,7 @@ public class StreamerController : ControllerBase
 
     [HttpPost(Name = nameof(CreateStreamer))]
     [ProducesResponseType((int)HttpStatusCode.OK)]
+    [Authorize(Roles = ApplicationUserRoles.Admin)]
     public async Task<ActionResult<int>> CreateStreamer([FromBody]CreateStreamerDto payload)
     {
         var command = new Application.Features.Streamers.Create.Command(payload);

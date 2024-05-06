@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Application.Features.Videos.Dtos;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -18,6 +19,7 @@ public class VideoController : ControllerBase
 
     [HttpGet("{username}", Name = nameof(GetVideosByUsername))]
     [ProducesResponseType(typeof(IEnumerable<VideoDto>), (int)HttpStatusCode.OK)]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<VideoDto>>> GetVideosByUsername(string username)
     {
         var query = new Application.Features.Videos.List.Query(username);

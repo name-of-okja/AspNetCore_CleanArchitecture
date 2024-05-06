@@ -14,7 +14,7 @@ public static class InfrastructureServiceRegistration
     public static IServiceCollection AddInfrastructureServcies(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<StreamerDbContext>(opt => 
-            opt.UseSqlite(configuration.GetConnectionString("Sqlite"))
+            opt.UseSqlite(configuration.GetConnectionString("StreamerConnectionString"))
         );
 
         services.AddScoped(typeof(IAsyncRepository<>), typeof(RepositoryBase<>));
