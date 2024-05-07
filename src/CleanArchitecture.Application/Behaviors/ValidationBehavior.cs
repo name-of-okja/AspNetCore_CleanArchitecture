@@ -23,7 +23,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
             if (failures.Count > 0)
             {
-                throw new Contracts.Exceptions.ValidationException(failures);
+                throw new Exceptions.ValidationException(failures);
             }
         }
 

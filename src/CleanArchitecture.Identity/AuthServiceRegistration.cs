@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+
 namespace CleanArchitecture.Identity;
 public static class AuthServiceRegistration
 {
@@ -33,6 +34,7 @@ public static class AuthServiceRegistration
         {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
         }).AddJwtBearer(opt =>
         {
             opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters

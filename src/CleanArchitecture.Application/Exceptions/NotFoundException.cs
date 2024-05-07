@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Application.Contracts.Exceptions;
+﻿namespace CleanArchitecture.Application.Exceptions;
 public class NotFoundException : ApplicationException
 {
     public NotFoundException(string name, object key)

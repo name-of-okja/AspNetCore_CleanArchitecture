@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace CleanArchitecture.Application.Contracts.Exceptions;
+namespace CleanArchitecture.Application.Exceptions;
 public class ValidationException : ApplicationException
 {
     public IDictionary<string, string[]> Errors { get; }

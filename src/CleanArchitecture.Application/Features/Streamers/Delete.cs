@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using CleanArchitecture.Application.Contracts.Exceptions;
 using CleanArchitecture.Application.Contracts.Persistence;
+using CleanArchitecture.Application.Exceptions;
 using CleanArchitecture.Domain;
 using MediatR;
 using Microsoft.Extensions.Logging;

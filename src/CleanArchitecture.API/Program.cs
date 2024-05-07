@@ -2,6 +2,7 @@ using CleanArchitecture.Infrastructure;
 using CleanArchitecture.Application;
 using CleanArchitecture.Infrastructure.Persistence;
 using CleanArchitecture.Identity;
+using CleanArchitecture.API.Middleware;
 namespace CleanArchitecture.API;
 
 public class Program
@@ -45,7 +46,9 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-        
+
+        app.UseMiddleware<ExceptionMiddleware>();
+
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseCors("CorsPolicy");
