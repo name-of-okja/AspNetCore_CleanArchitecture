@@ -103,9 +103,10 @@ public class AuthService : IAuthService
 
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim(ApplicationClaimTypes.Sub, user.UserName),
+            new Claim(ApplicationClaimTypes.Email, user.Email),
             new Claim(ApplicationClaimTypes.Uid, user.Id),
+            new Claim(ApplicationClaimTypes.UserName, user.UserName),
         }
         .Union(userClaims)
         .Union(roleClaims);

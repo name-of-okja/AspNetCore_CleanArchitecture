@@ -42,20 +42,22 @@ public class Edit
 
     public class Handler : IRequestHandler<Command, Unit>
     { 
-        private readonly IStreamerRepository _streamerRepository;
+        //private readonly IStreamerRepository _streamerRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger<Handler> _logger;
 
-        public Handler(IStreamerRepository streamerRepository, IMapper mapper, ILogger<Handler> logger)
+        public Handler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<Handler> logger)
         {
-            _streamerRepository = streamerRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
         }
 
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var streamer = await _streamerRepository.GetByIdAsync(request.Id);
+            // var streamer = await _streamerRepository.GetByIdAsync(request.Id);
+            var streamer = await _unitOfWork.StreamerRepository.GetByIdAsync(request.Id);
 
             if (streamer is null)
             {
@@ -66,7 +68,8 @@ public class Edit
             // payload -> streamer update
             _mapper.Map(request.Payload, streamer, typeof(EditStreamerDto), typeof(Streamer));
 
-            await _streamerRepository.UpdateAsync(streamer);
+            // await _streamerRepository.UpdateAsync(streamer);
+            await _unitOfWork.StreamerRepository.UpdateAsync(streamer);
 
             _logger.LogInformation($"[Streamer] [Edit] {request.Id}");
 

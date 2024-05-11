@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Application.Contracts.Identity;
+﻿using CleanArchitecture.Application.Constants;
+using CleanArchitecture.Application.Contracts.Identity;
 using CleanArchitecture.Application.Models.Identity;
 using CleanArchitecture.Identity.Models;
 using CleanArchitecture.Identity.Services;
@@ -30,6 +31,9 @@ public static class AuthServiceRegistration
 
         services.AddTransient<IAuthService, AuthService>();
 
+        services.AddHttpContextAccessor();
+        services.AddScoped<IUserAccessorService, UserAccessorService>();
+
         services.AddAuthentication(opt =>
         {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -46,7 +50,8 @@ public static class AuthServiceRegistration
                 ClockSkew = TimeSpan.Zero,
                 ValidIssuer = configuration["JwtSettings:Issuer"],
                 ValidAudience = configuration["JwtSettings:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"])),
+                NameClaimType = ApplicationClaimTypes.UserName,
             };
         });
 

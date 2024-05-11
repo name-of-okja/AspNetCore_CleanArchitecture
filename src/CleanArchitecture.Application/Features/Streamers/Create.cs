@@ -44,28 +44,38 @@ public class Create
 
     public class Handler : IRequestHandler<Command, int>
     {
-        private readonly IStreamerRepository _streamerRepository;
+        // private readonly IStreamerRepository _streamerRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
         private readonly ILogger<Handler> _logger;
 
-        public Handler(IStreamerRepository streamerRepository, IMapper mapper,
+        public Handler(IUnitOfWork unitOfWork, IMapper mapper,
                     IEmailService emailService, ILogger<Handler> logger)
         {
-            _streamerRepository = streamerRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _emailService = emailService;
             _logger = logger;
         }
         public async Task<int> Handle(Command request, CancellationToken cancellationToken)
         {
-            var streamer = _mapper.Map<Streamer>(request.Payload);
+            var streamerEntity = _mapper.Map<Streamer>(request.Payload);
 
-            var streamerEntity = await _streamerRepository.AddAsync(streamer);
+            //var streamerEntity = await _streamerRepository.AddAsync(streamer);
+
+            _unitOfWork.StreamerRepository.AddEntity(streamerEntity);
+
+            var result = await _unitOfWork.CompleteAsync();
+
+            if (result <= 0)
+            {
+                throw new Exception($"Streamer Create Error");
+            }
 
             _logger.LogInformation($"[Streamer] [Create]  {streamerEntity.Id}");
 
-            await SendEmail(streamer);
+            await SendEmail(streamerEntity);
 
             return streamerEntity.Id;
         }

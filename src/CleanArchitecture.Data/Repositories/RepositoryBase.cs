@@ -76,6 +76,7 @@ public class RepositoryBase<T> : IAsyncRepository<T> where T : BaseDomainModel
     }
     public async Task<T> UpdateAsync(T entity)
     {
+        _context.Set<T>().Attach(entity);
         _context.Entry(entity).State = EntityState.Modified;
         await _context.SaveChangesAsync();
         return entity;
@@ -84,5 +85,33 @@ public class RepositoryBase<T> : IAsyncRepository<T> where T : BaseDomainModel
     {
         _context.Set<T>().Remove(entity);
         await _context.SaveChangesAsync();
+    }
+
+    public void AddEntity(T entity)
+    {
+        _context.Set<T>().Add(entity);
+    }
+
+    public void UpdateEntity(T entity)
+    {
+        _context.Set<T>().Attach(entity);
+        _context.Entry(entity).State = EntityState.Modified;
+    }
+
+    public void DeleteEntity(T entity)
+    {
+        _context.Set<T>().Remove(entity);
+    }
+
+    public CastT Cast<CastT>() where CastT : IAsyncRepository<T>
+    {
+        if (this is CastT casted)
+        {
+            return casted;
+        }
+        else
+        {
+            throw new InvalidCastException("This instance cannot be casted to the specified type.");
+        }
     }
 }

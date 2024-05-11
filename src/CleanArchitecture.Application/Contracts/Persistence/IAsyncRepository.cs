@@ -20,4 +20,11 @@ public interface IAsyncRepository<T> where T : BaseDomainModel
     Task<T> AddAsync(T entity);
     Task<T> UpdateAsync(T entity);
     Task DeleteAsync(T entity);
+
+    void AddEntity(T entity);
+    void UpdateEntity(T entity);
+    void DeleteEntity(T entity);
+
+    CastT Cast<CastT>() where CastT: IAsyncRepository<T>;
+
 }

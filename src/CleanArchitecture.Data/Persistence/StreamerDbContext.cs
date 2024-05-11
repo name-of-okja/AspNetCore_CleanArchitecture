@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Domain;
+﻿using CleanArchitecture.Application.Contracts.Identity;
+using CleanArchitecture.Domain;
 using CleanArchitecture.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,8 +7,11 @@ namespace CleanArchitecture.Infrastructure.Persistence;
 
 public class StreamerDbContext : DbContext
 {
-    public StreamerDbContext(DbContextOptions<StreamerDbContext> options) : base(options)
+    private readonly IUserAccessorService _userAccessorService;
+    public StreamerDbContext(DbContextOptions<StreamerDbContext> options
+                            ,IUserAccessorService userAccessorService) : base(options)
     {
+        _userAccessorService = userAccessorService;
     }
     public DbSet<Streamer> Streamers { get; set; }
 
@@ -27,19 +31,21 @@ public class StreamerDbContext : DbContext
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
+        var userName = _userAccessorService.GetUserName();
+
         foreach (var entry in ChangeTracker.Entries<BaseDomainModel>())
         {
-            switch(entry.State) 
+            switch (entry.State)
             {
                 case EntityState.Added:
                     entry.Entity.CreatedAt = DateTime.UtcNow;
-                    entry.Entity.CreatedBy = "system";
+                    entry.Entity.CreatedBy = userName;
                     entry.Entity.UpdatedAt = DateTime.UtcNow;
-                    entry.Entity.UpdatedBy = entry.Entity.CreatedBy;
+                    entry.Entity.UpdatedBy = userName;
                     break;
                 case EntityState.Modified:
                     entry.Entity.UpdatedAt = DateTime.UtcNow;
-                    entry.Entity.UpdatedBy = "system";
+                    entry.Entity.UpdatedBy = userName;
                     break;
             }
         }
