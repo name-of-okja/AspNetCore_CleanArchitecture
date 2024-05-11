@@ -7,6 +7,7 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly StreamerDbContext _context;
     private IDbContextTransaction _transaction;
+    private bool _isCommitted = false;
 
     private Lazy<IVideoRepository> _videoRepository;
     private Lazy<IStreamerRepository> _streamerRepository;
@@ -30,10 +31,16 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task<int> CompleteAsync()
     {
+        if (_isCommitted)
+        {
+            throw new InvalidOperationException("트랜잭션이 이미 커밋되었습니다.");
+        }
+
         try
         {
             var result = await _context.SaveChangesAsync();
             _transaction.Commit();
+                _isCommitted = true;
             return result;
         }
         catch (Exception ex)
