@@ -70,7 +70,7 @@ public class Edit
 
             // await _streamerRepository.UpdateAsync(streamer);
             await _unitOfWork.StreamerRepository.UpdateAsync(streamer);
-
+            // await _unitOfWork.CompleteAsync();
             _logger.LogInformation($"[Streamer] [Edit] {request.Id}");
 
             return Unit.Value;

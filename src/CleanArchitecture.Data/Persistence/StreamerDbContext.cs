@@ -87,5 +87,6 @@ public class StreamerDbContext : DbContext
                 .HasMany(m => m.Actors)
                 .WithMany(m => m.Videos)
                 .UsingEntity<VideoActor>(tb => tb.HasKey(va => new { va.ActorId, va.VideoId }));
+                
     }
 }
