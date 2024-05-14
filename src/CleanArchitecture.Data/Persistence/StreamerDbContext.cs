@@ -31,7 +31,7 @@ public class StreamerDbContext : DbContext
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var userName = _userAccessorService.GetUserName();
+        var userName = _userAccessorService?.GetUserName();
 
         foreach (var entry in ChangeTracker.Entries<BaseDomainModel>())
         {
@@ -39,13 +39,13 @@ public class StreamerDbContext : DbContext
             {
                 case EntityState.Added:
                     entry.Entity.CreatedAt = DateTime.UtcNow;
-                    entry.Entity.CreatedBy = userName;
+                    entry.Entity.CreatedBy ??= userName;
                     entry.Entity.UpdatedAt = DateTime.UtcNow;
-                    entry.Entity.UpdatedBy = userName;
+                    entry.Entity.UpdatedBy ??= userName;
                     break;
                 case EntityState.Modified:
                     entry.Entity.UpdatedAt = DateTime.UtcNow;
-                    entry.Entity.UpdatedBy = userName;
+                    entry.Entity.UpdatedBy ??= userName;
                     break;
             }
         }
