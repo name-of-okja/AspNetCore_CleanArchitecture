@@ -7,7 +7,7 @@ namespace CleanArchitecture.API;
 
 public class Program
 {
-    public static async Task Main(string[] args)
+    internal static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 

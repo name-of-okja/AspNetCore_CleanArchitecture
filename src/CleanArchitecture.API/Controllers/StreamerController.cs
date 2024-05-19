@@ -1,4 +1,6 @@
-﻿using CleanArchitecture.Application.Features.Streamers.Dtos;
+﻿using CleanArchitecture.Application.Contracts.Persistence;
+using CleanArchitecture.Application.Features.Streamers.Dtos;
+using CleanArchitecture.Domain;
 using CleanArchitecture.Identity.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +14,19 @@ namespace CleanArchitecture.API.Controllers;
 public class StreamerController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IStreamerRepository _streamerRepository;
 
-    public StreamerController(IMediator mediator)
+    public StreamerController(IMediator mediator, IStreamerRepository streamerRepository)
     {
         _mediator = mediator;
+        _streamerRepository = streamerRepository;
+    }
+
+    [HttpGet(Name = nameof(GetAllStreamer))]
+    public async Task<ActionResult<List<Streamer>>> GetAllStreamer()
+    {
+        var streamers = await _streamerRepository.GetAllAsync();
+        return Ok(streamers);
     }
 
     [HttpPost(Name = nameof(CreateStreamer))]
